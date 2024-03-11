@@ -11,10 +11,8 @@ import { PlusIcon, MinusIcon, Trash2Icon } from "lucide-react";
 import { useContext } from "react";
 import { CartContext } from "@/context/cart-context";
 
-export default function ItemCard({ id, title, quantity }) {
+export default function ItemCard({ id, title, quantity, price }) {
   const { incrementItem, decrementItem, removeItem } = useContext(CartContext);
-
-  console.log(id)
 
   return (
     <Card className="p-1 mx-2 lg:mx-4 flex flex-col gap-1 text-sm xl:text-md shadow-md">
@@ -43,7 +41,7 @@ export default function ItemCard({ id, title, quantity }) {
             className="w-6 h-6 p-1 border border-slate-200 rounded-md hover:cursor-pointer hover:bg-rose-500"
           />
         </div>
-        <h3 className="font-medium">20 Eur</h3>
+        <h3 className="font-medium">{price * quantity} Eur</h3>
       </div>
     </Card>
   );

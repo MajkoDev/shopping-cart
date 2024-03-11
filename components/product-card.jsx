@@ -19,9 +19,9 @@ import { useContext } from "react";
 import { CartContext } from "@/context/cart-context";
 
 export default function ProductCard({ id, title, description, price }) {
-  const { decrementItem, incrementItem } = useContext(CartContext);
+  const { decrementItem, incrementItem, itemQuantity } = useContext(CartContext);
 
-  let quantity = 2;
+  let quantity = itemQuantity(id)
 
   return (
     <Card className="w-44 md:w-72 my-1 md:mx-2 shadow-md">
