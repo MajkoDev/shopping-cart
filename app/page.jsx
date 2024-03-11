@@ -3,14 +3,20 @@ import ProductCard from "@/components/product-card";
 import CartSummary from "@/components/cart-summary";
 import ItemCard from "@/components/item-card";
 
+// mock data
+import data from "../data.json";
+
 export default function Home() {
+
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-3 w-full">
       <div className="md:col-span-2 lg:col-span-3 bg-slate-50">
         <h2 className="font-bold text-center py-4 text-xl">Store</h2>
         {/* List of Products */}
         <div className="flex flex-wrap justify-center">
-          <ProductCard />
+          {data.products.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
         </div>
       </div>
 
