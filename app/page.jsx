@@ -19,25 +19,50 @@ export default function Home() {
   const [cart, setCart] = useState(defaultCart);
 
   // get quantity of particular item
-  function itemQuantity(product) {
-    const id = product.id;
+  function itemQuantity(id) {
     // find item based on ID and get quantity or return 0
-    return cart.find((item) => item.id === id)?.quantity || 0;
+    return cart.find((product) => product.id === id)?.quantity || 0;
   }
 
   // increment items quantity
-  function incrementItem(product) {
-    const id = product.id;
+  function incrementItem(id, title, price) {
+    setCart((currItems) => {
+      if (currItems.find((item) => item.id === id) == null) {
+        // if the item doesn't exist, add it to the cart and set quantity to 1
+        return [...currItems, { id, title, price, quantity: 1 }];
+      } else {
+        // if the item exists, increase its quantity by 1
+        return currItems.map((item) => {
+          if (item.id === id) {
+            return { ...item, quantity: item.quantity + 1 };
+          } else {
+            return item;
+          }
+        });
+      }
+    });
   }
 
   // decrement items quantity
-  function decrementItem(product) {
-    const id = product.id;
+  function decrementItem(id) {
+    setCart((currItems) => {
+      // check if the item with the given ID already exists in the cart
+      if (currItems.find((item) => item.id === id)?.quantity === 1) {
+        return currItems.filter((item) => item.id !== id);
+      } else {
+        return currItems.map((item) => {
+          if (item.id === id) {
+            return { ...item, quantity: item.quantity - 1 };
+          } else {
+            return item;
+          }
+        });
+      }
+    });
   }
 
   // remove item from cart
-  function removeItem(product) {
-    const id = product.id;
+  function removeItem(id) {
     // filter items in cart based on ID
     setCart((currItems) => currItems.filter((item) => item.id !== id));
   }
@@ -49,15 +74,18 @@ export default function Home() {
 
   // get number of items in cart
   const cartCount = cart.reduce(
-    (quantity, item) => item.quantity + quantity,
+    (quantity, product) => product.quantity + quantity,
     0
   );
 
   // get total price of items in cart
   const totalPrice = cart.reduce(
-    (total, item) => item.price * item.quantity + total,
+    (total, product) => product.price * product.quantity + total,
     0
   );
+
+  console.log(cart);
+  console.log(totalPrice);
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-3 w-full">
@@ -66,19 +94,46 @@ export default function Home() {
         {/* List of Products */}
         <div className="flex flex-wrap justify-center">
           {data.products.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard
+              key={product.id}
+              itemQuantity={itemQuantity}
+              incrementItem={incrementItem}
+              decrementItem={decrementItem}
+              {...product}
+            />
           ))}
         </div>
       </div>
 
       <div className="sticky top-0 h-screen overflow-y-auto bg-slate-100 flex flex-col justify-between">
         {/* Summary of Cart */}
-        <CartSummary cartCount={cartCount} totalPrice={totalPrice} />
+        <CartSummary
+          cartCount={cartCount}
+          totalPrice={totalPrice}
+          clearCart={clearCart}
+        />
 
+        {/* Items in Cart */}
         <div className="flex-grow">
-          {/* Items in Cart */}
           <div className="flex flex-col gap-y-2 justify-center">
-            <ItemCard />
+            {cart.length === 0 ? (
+              <h1 className="text-center text-xl font-bold my-12">
+                Cart is Empty.
+              </h1>
+            ) : (
+              <>
+                {cart?.map((item) => (
+                  <ItemCard
+                    key={item.id}
+                    itemQuantity={itemQuantity}
+                    incrementItem={incrementItem}
+                    decrementItem={decrementItem}
+                    removeItem={removeItem}
+                    {...item}
+                  />
+                ))}
+              </>
+            )}
           </div>
         </div>
       </div>
