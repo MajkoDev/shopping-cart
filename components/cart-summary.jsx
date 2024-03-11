@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 
 export default function CartSummary() {
   return (
-    <div className="h-52 flex flex-col justify-center gap-y-2 bg-white rounded-md m-3 mt-0 p-3 sticky top-0 shadow-lg">
+    <div className="h-44 flex flex-col justify-center gap-y-2 bg-white rounded-b-md rounded-t-none m-3 mt-0 p-3 sticky top-0 shadow-lg">
       <h2 className="font-extrabold text-center mb-3">Summary of Cart</h2>
       <div className="flex flex-row justify-between text-md">
         <p className="text-slate-600 text-sm">Number of Items in Cart:</p>
