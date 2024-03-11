@@ -36,11 +36,16 @@ export default function ProductCard({
         <h2 className="font-bold">{price} Eur</h2>
 
         {quantity === 0 ? (
-          <Button variant="outline" onClick={() => incrementItem(id, title, price)}>
+          <Button
+            variant="outline"
+            onClick={() => incrementItem(id, title, price)}
+          >
             Add to Card
           </Button>
         ) : (
           <div className="flex flex-row gap-1.5">
+            {/* there is not need to pass title and price 
+            if this button will appear after item is added to cart */}
             <Button
               variant="outline"
               onClick={() => incrementItem(id)}
