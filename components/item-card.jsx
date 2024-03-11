@@ -41,7 +41,7 @@ export default function ItemCard({
             className="w-6 h-6 p-1 border border-slate-200 rounded-md hover:cursor-pointer hover:bg-rose-500"
           />
         </div>
-        <h3 className="font-medium">20 Eur</h3>
+        <h3 className="font-medium">{price * quantity} Eur</h3>
       </div>
     </Card>
   );
