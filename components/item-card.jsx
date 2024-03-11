@@ -1,3 +1,4 @@
+"use client";
 // component for shopping cart item
 
 // ui
@@ -6,14 +7,15 @@ import { Card } from "./ui/card";
 // icons
 import { PlusIcon, MinusIcon, Trash2Icon } from "lucide-react";
 
-export default function ItemCard({
-  id,
-  title,
-  quantity,
-  incrementItem,
-  decrementItem,
-  removeItem,
-}) {
+// context
+import { useContext } from "react";
+import { CartContext } from "@/context/cart-context";
+
+export default function ItemCard({ id, title, quantity }) {
+  const { incrementItem, decrementItem, removeItem } = useContext(CartContext);
+
+  console.log(id)
+
   return (
     <Card className="p-1 mx-2 lg:mx-4 flex flex-col gap-1 text-sm xl:text-md shadow-md">
       <div className="flex flex-row justify-between w-full text-md font-medium">

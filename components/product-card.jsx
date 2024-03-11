@@ -1,3 +1,4 @@
+"use client";
 // component for store product
 
 // ui
@@ -13,16 +14,14 @@ import { Button } from "./ui/button";
 // icons
 import { PlusIcon, MinusIcon } from "lucide-react";
 
-export default function ProductCard({
-  id,
-  title,
-  description,
-  price,
-  itemQuantity,
-  incrementItem,
-  decrementItem,
-}) {
-  let quantity = itemQuantity(id);
+// context
+import { useContext } from "react";
+import { CartContext } from "@/context/cart-context";
+
+export default function ProductCard({ id, title, description, price }) {
+  const { decrementItem, incrementItem } = useContext(CartContext);
+
+  let quantity = 2;
 
   return (
     <Card className="w-44 md:w-72 my-1 md:mx-2 shadow-md">

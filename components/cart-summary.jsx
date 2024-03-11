@@ -1,7 +1,15 @@
+"use client";
+
 // ui
 import { Button } from "@/components/ui/button";
 
-export default function CartSummary({ cartCount, totalPrice, clearCart }) {
+// context
+import { useContext } from "react";
+import { CartContext } from "@/context/cart-context";
+
+export default function CartSummary() {
+  const { cartCount, totalPrice, clearCart } = useContext(CartContext);
+
   return (
     <div className="h-52 flex flex-col justify-center gap-y-2 bg-white rounded-b-md rounded-t-none m-3 mt-0 p-3 sticky top-0 shadow-lg">
       <h2 className="font-extrabold text-center mb-3">Summary of Cart</h2>
