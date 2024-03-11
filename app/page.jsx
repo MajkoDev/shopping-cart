@@ -15,6 +15,7 @@ import data from "../data.json";
 const defaultCart = [];
 
 export default function Home() {
+
   // state of shopping cart
   const [cart, setCart] = useState(defaultCart);
 
@@ -83,9 +84,6 @@ export default function Home() {
     (total, product) => product.price * product.quantity + total,
     0
   );
-
-  console.log(cart);
-  console.log(totalPrice);
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-3 w-full">
