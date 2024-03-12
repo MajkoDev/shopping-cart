@@ -1,10 +1,10 @@
 "use client";
 
-import { createContext, useReducer, useState } from "react";
+import { createContext, useReducer } from "react";
 
 function reducer(state, action) {
   switch (action.type) {
-    case "ADD_ITEM":
+    case "INCREMENT_ITEM":
       if (state.find((item) => item.id === action.item.id)) {
         return state.map((item) =>
           item.id === action.item.id
@@ -14,20 +14,26 @@ function reducer(state, action) {
       } else {
         return [...state, { ...action.item, quantity: 1 }];
       }
+
+    case "DECREMENT_ITEM":
+      if (state.find((item) => item.id === action.id)?.quantity === 1) {
+        return state.filter((item) => item.id !== action.id);
+      } else {
+        return state.map((item) => {
+          if (item.id === action.id) {
+            return { ...item, quantity: item.quantity - 1 };
+          } else {
+            return item;
+          }
+        });
+      }
+
     case "REMOVE_ITEM":
       return state.filter((item) => item.id !== action.id);
-    case "INCREMENT_ITEM":
-      return state.map((item) =>
-        item.id === action.id ? { ...item, quantity: item.quantity + 1 } : item
-      );
-    case "DECREMENT_ITEM":
-      return state.map((item) =>
-        item.id === action.id
-          ? { ...item, quantity: Math.max(item.quantity - 1, 0) }
-          : item
-      );
+
     case "CLEAR_CART":
       return defaultCart;
+
     default:
       return state;
   }
@@ -45,17 +51,15 @@ export function CartProvider({ children }) {
   };
 
   const incrementItem = (id, title, price) => {
-    dispatch({ type: "ADD_ITEM", item: { id, title, price } });
+    dispatch({ type: "INCREMENT_ITEM", item: { id, title, price } });
   };
-
   const decrementItem = (id) => {
     dispatch({ type: "DECREMENT_ITEM", id });
   };
-
+  
   const removeItem = (id) => {
     dispatch({ type: "REMOVE_ITEM", id });
   };
-
   const clearCart = () => {
     dispatch({ type: "CLEAR_CART" });
   };
