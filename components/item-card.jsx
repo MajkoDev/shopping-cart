@@ -22,7 +22,7 @@ export default function ItemCard({ id, title, quantity, price }) {
           <h3>
             <span className="text-slate-500">Q:</span> {quantity}
           </h3>
-          <h3>10 Eur</h3>
+          <h3>{price} Eur</h3>
         </div>
       </div>
 
