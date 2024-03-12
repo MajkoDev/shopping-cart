@@ -1,70 +1,70 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useReducer, useState } from "react";
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "ADD_ITEM":
+      if (state.find((item) => item.id === action.item.id)) {
+        return state.map((item) =>
+          item.id === action.item.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      } else {
+        return [...state, { ...action.item, quantity: 1 }];
+      }
+    case "REMOVE_ITEM":
+      return state.filter((item) => item.id !== action.id);
+    case "INCREMENT_ITEM":
+      return state.map((item) =>
+        item.id === action.id ? { ...item, quantity: item.quantity + 1 } : item
+      );
+    case "DECREMENT_ITEM":
+      return state.map((item) =>
+        item.id === action.id
+          ? { ...item, quantity: Math.max(item.quantity - 1, 0) }
+          : item
+      );
+    case "CLEAR_CART":
+      return defaultCart;
+    default:
+      return state;
+  }
+}
 
 const defaultCart = [];
 
 export const CartContext = createContext(null);
 
 export function CartProvider({ children }) {
-  const [cart, setCart] = useState(defaultCart);
+  const [cart, dispatch] = useReducer(reducer, defaultCart);
 
-  function itemQuantity(id) {
+  const itemQuantity = (id) => {
     return cart.find((product) => product.id === id)?.quantity || 0;
-  }
+  };
 
-  function incrementItem(id, title, price) {
-    setCart((currItems) => {
-      if (currItems.find((item) => item.id === id) == null) {
-        return [...currItems, { id, title, price, quantity: 1 }];
-      } else {
-        return currItems.map((item) => {
-          if (item.id === id) {
-            return { ...item, quantity: item.quantity + 1 };
-          } else {
-            return item;
-          }
-        });
-      }
-    });
-  }
+  const incrementItem = (id, title, price) => {
+    dispatch({ type: "ADD_ITEM", item: { id, title, price } });
+  };
 
-  // decrement items quantity
-  function decrementItem(id) {
-    setCart((currItems) => {
-      // check if the item with the given ID already exists in the cart
-      if (currItems.find((item) => item.id === id)?.quantity === 1) {
-        return currItems.filter((item) => item.id !== id);
-      } else {
-        return currItems.map((item) => {
-          if (item.id === id) {
-            return { ...item, quantity: item.quantity - 1 };
-          } else {
-            return item;
-          }
-        });
-      }
-    });
-  }
+  const decrementItem = (id) => {
+    dispatch({ type: "DECREMENT_ITEM", id });
+  };
 
-  // remove item from cart
-  function removeItem(id) {
-    // filter items in cart based on ID
-    setCart((currItems) => currItems.filter((item) => item.id !== id));
-  }
+  const removeItem = (id) => {
+    dispatch({ type: "REMOVE_ITEM", id });
+  };
 
-  // set cart to default state
-  function clearCart() {
-    setCart(defaultCart);
-  }
+  const clearCart = () => {
+    dispatch({ type: "CLEAR_CART" });
+  };
 
-  // get number of items in cart
   const cartCount = cart.reduce(
     (quantity, product) => product.quantity + quantity,
     0
   );
 
-  // get total price of items in cart
   const totalPrice = cart.reduce(
     (total, product) => product.price * product.quantity + total,
     0

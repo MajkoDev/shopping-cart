@@ -12,7 +12,7 @@ const openSans = Open_Sans({
 
 export const metadata = {
   title: "Shopping Cart",
-  description: "Stopping Cart with useState and useContext",
+  description: "Stopping Cart with useReducer",
 };
 
 export default function RootLayout({ children }) {
