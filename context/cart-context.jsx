@@ -56,7 +56,7 @@ export function CartProvider({ children }) {
   const decrementItem = (id) => {
     dispatch({ type: "DECREMENT_ITEM", id });
   };
-  
+
   const removeItem = (id) => {
     dispatch({ type: "REMOVE_ITEM", id });
   };
