@@ -1,13 +1,14 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import { createContext, useState } from "react";
+import useLocalStorage from "@/hooks/use-local-storage";
 
 const defaultCart = [];
 
 export const CartContext = createContext(null);
 
 export function CartProvider({ children }) {
-  const [cart, setCart] = useState(defaultCart);
+  const [cart, setCart] = useLocalStorage('shop',defaultCart);
 
   function itemQuantity(id) {
     return cart.find((product) => product.id === id)?.quantity || 0;
