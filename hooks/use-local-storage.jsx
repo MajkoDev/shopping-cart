@@ -1,32 +1,54 @@
-import { useState, useEffect } from "react";
+"use client";
+
+import { useEffect, useState } from "react";
+
+const isServer = typeof window === "undefined";
 
 export default function useLocalStorage(key, initialValue) {
-  // state to hold the value
-  const [value, setValue] = useState(() => {
-    try {
-      // look ar value from local storage if it exists
-      const jsonValue = localStorage.getItem(key);
-      if (jsonValue != null) return JSON.parse(jsonValue);
-    } catch (error) {
-      // handle errors
-      console.error("Error accessing localStorage:", error);
-    }
+  // State to store our value
+  // Pass initial state function to useState so logic is only executed once
+  const [storedValue, setStoredValue] = useState(() => initialValue);
 
-    // if initial value is a function, execute is
-    if (typeof initialValue === "function") {
-      return initialValue();
-    } else {
+  const initialize = () => {
+    if (isServer) {
       return initialValue;
     }
-  });
-
-  // update local storage whenever value changes
-  useEffect(() => {
-    if (typeof window != "undefined") {
-      localStorage.setItem(key, JSON.stringify(value));
+    try {
+      // Get from local storage by key
+      const item = window.localStorage.getItem(key);
+      // Parse stored json or if none return initialValue
+      return item ? JSON.parse(item) : initialValue;
+    } catch (error) {
+      // If error also return initialValue
+      console.log(error);
+      return initialValue;
     }
-  }, [key, value]);
+  };
 
-  // return the value and function to update it
-  return [value, setValue];
+  /* prevents hydration error so that state is only initialized after server is defined */
+  useEffect(() => {
+    if (!isServer) {
+      setStoredValue(initialize());
+    }
+  }, []);
+
+  // Return a wrapped version of useState's setter function that ...
+  // ... persists the new value to localStorage.
+  const setValue = (value) => {
+    try {
+      // Allow value to be a function so we have same API as useState
+      const valueToStore =
+        value instanceof Function ? value(storedValue) : value;
+      // Save state
+      setStoredValue(valueToStore);
+      // Save to local storage
+      if (typeof window !== "undefined") {
+        window.localStorage.setItem(key, JSON.stringify(valueToStore));
+      }
+    } catch (error) {
+      // A more advanced implementation would handle the error case
+      console.log(error);
+    }
+  };
+  return [storedValue, setValue];
 }
