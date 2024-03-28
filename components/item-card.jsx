@@ -7,12 +7,11 @@ import { Card } from "./ui/card";
 // icons
 import { PlusIcon, MinusIcon, Trash2Icon } from "lucide-react";
 
-// context
-import { useContext } from "react";
-import { CartContext } from "@/context/cart-context";
+// zustand
+import { ShoppingCartStore } from "@/app/store";
 
 export default function ItemCard({ id, title, quantity, price }) {
-  const { incrementItem, decrementItem, removeItem } = useContext(CartContext);
+  const { incrementItem, decrementItem, removeItem } = ShoppingCartStore();
 
   return (
     <Card className="p-1 mx-2 lg:mx-4 flex flex-col gap-1 text-sm xl:text-md shadow-md">

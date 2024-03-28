@@ -8,12 +8,11 @@ import ItemCard from "@/components/item-card";
 // mock data
 import data from "../data.json";
 
-// context
-import { useContext } from "react";
-import { CartContext } from "@/context/cart-context";
+// zustand
+import { ShoppingCartStore } from "./store";
 
 export default function Home() {
-  const { cart } = useContext(CartContext);
+  const { cart } = ShoppingCartStore();
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-3 w-full">

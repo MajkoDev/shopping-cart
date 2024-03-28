@@ -8,7 +8,7 @@ const defaultCart = [];
 export const CartContext = createContext(null);
 
 export function CartProvider({ children }) {
-  const [cart, setCart] = useLocalStorage("shopping-cart", defaultCart);
+  const [cart, setCart] = useState([]);
 
   function itemQuantity(id) {
     return cart.find((product) => product.id === id)?.quantity || 0;

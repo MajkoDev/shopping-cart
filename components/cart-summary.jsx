@@ -3,12 +3,11 @@
 // ui
 import { Button } from "@/components/ui/button";
 
-// context
-import { useContext } from "react";
-import { CartContext } from "@/context/cart-context";
+// zustand
+import { ShoppingCartStore } from "@/app/store";
 
 export default function CartSummary() {
-  const { cartCount, totalPrice, clearCart } = useContext(CartContext);
+  const { cartCount, totalPrice, clearCart } = ShoppingCartStore();
 
   return (
     <div className="h-52 flex flex-col justify-center gap-y-2 bg-white rounded-b-md rounded-t-none m-3 mt-0 p-3 sticky top-0 shadow-lg">

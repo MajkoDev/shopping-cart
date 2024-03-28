@@ -14,14 +14,11 @@ import { Button } from "./ui/button";
 // icons
 import { PlusIcon, MinusIcon } from "lucide-react";
 
-// context
-import { useContext } from "react";
-import { CartContext } from "@/context/cart-context";
+// zustand
+import { ShoppingCartStore } from "@/app/store";
 
 export default function ProductCard({ id, title, description, price }) {
-  const { decrementItem, incrementItem, itemQuantity } =
-    useContext(CartContext);
-
+  const { decrementItem, incrementItem, itemQuantity } = ShoppingCartStore();
   let quantity = itemQuantity(id);
 
   return (
