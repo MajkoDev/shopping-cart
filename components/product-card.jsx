@@ -15,11 +15,16 @@ import { Button } from "./ui/button";
 import { PlusIcon, MinusIcon } from "lucide-react";
 
 // zustand
-import { ShoppingCartStore } from "@/app/store";
+import useShoppingCart from "@/app/store";
 
 export default function ProductCard({ id, title, description, price }) {
-  const { decrementItem, incrementItem, itemQuantity } = ShoppingCartStore();
-  let quantity = itemQuantity(id);
+
+  const decrementItem = useShoppingCart((state) => state.decrementItem);
+  const incrementItem = useShoppingCart((state) => state.incrementItem);
+  const itemQuantity = useShoppingCart((state) => state.itemQuantity);
+
+
+   let quantity = itemQuantity(id);
 
   return (
     <Card className="w-44 md:w-72 my-1 md:mx-2 shadow-md">

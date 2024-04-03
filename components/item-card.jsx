@@ -8,11 +8,14 @@ import { Card } from "./ui/card";
 import { PlusIcon, MinusIcon, Trash2Icon } from "lucide-react";
 
 // zustand
-import { ShoppingCartStore } from "@/app/store";
+import useShoppingCart from "@/app/store";
 
 export default function ItemCard({ id, title, quantity, price }) {
-  const { incrementItem, decrementItem, removeItem } = ShoppingCartStore();
+  const incrementItem = useShoppingCart((state) => state.incrementItem);
+  const decrementItem = useShoppingCart((state) => state.decrementItem);
+  const removeItem = useShoppingCart((state) => state.removeItem);
 
+ 
   return (
     <Card className="p-1 mx-2 lg:mx-4 flex flex-col gap-1 text-sm xl:text-md shadow-md">
       <div className="flex flex-row justify-between w-full text-md font-medium">

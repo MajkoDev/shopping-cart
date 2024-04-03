@@ -9,10 +9,10 @@ import ItemCard from "@/components/item-card";
 import data from "../data.json";
 
 // zustand
-import { ShoppingCartStore } from "./store";
+import useShoppingCart from "./store";
 
 export default function Home() {
-  const { cart } = ShoppingCartStore();
+  const cart = useShoppingCart((state) => state.cart);
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-3 w-full">

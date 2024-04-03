@@ -4,10 +4,12 @@
 import { Button } from "@/components/ui/button";
 
 // zustand
-import { ShoppingCartStore } from "@/app/store";
+import useShoppingCart from "@/app/store";
 
 export default function CartSummary() {
-  const { cartCount, totalPrice, clearCart } = ShoppingCartStore();
+  const cartCount = useShoppingCart((state) => state.cartCount);
+  const totalPrice = useShoppingCart((state) => state.totalPrice);
+  const clearCart = useShoppingCart((state) => state.clearCart);
 
   return (
     <div className="h-52 flex flex-col justify-center gap-y-2 bg-white rounded-b-md rounded-t-none m-3 mt-0 p-3 sticky top-0 shadow-lg">
